@@ -6,3 +6,18 @@ body {
 a {
   color: #00B7FF;
 }
+
+#box {
+  background: #fff;
+  font-size: 18px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+#actions {
+  display: block;
+}
+
+#send {
+  display: inline-block;
+}
