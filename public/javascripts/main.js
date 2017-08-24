@@ -36,12 +36,15 @@ var connect = function(conn) {
         });
     } else if (conn.label === 'file') {
         conn.on('data', function(data) {
-            if (data.constructor === ArrayBuffer) {
-                var dataView = new Uint8Array(data);
+            if (data.file.constructor === ArrayBuffer) {
+                var dataView = new Uint8Array(data.file);
                 var dataBlob = new Blob([dataView]);
                 var url = window.URL.createObjectURL(dataBlob);
                 $('#' + conn.peer).find('.messages').append('<div><span class="file">' +
-                conn.peer + ' has sent you a <a target="_blank" href="' + url + '">file</a>.</span></div>');
+                conn.peer + ' has sent you a <a href="#" class="downloadFile">' + data.name  +'</a>.</span></div>');
+                $(".downloadFile").on('click', function() {
+                    saveAs(dataBlob, data.name);
+                });
             }
         });
     }
@@ -87,10 +90,14 @@ $(document).ready(function() {
     box.on('drop', function(e) {
         e.originalEvent.preventDefault();
         var file = e.originalEvent.dataTransfer.files[0];
+        var data = {
+            name: file.name,
+            file: file
+        }
         eachActiveConnection(function(conn, $conn) {
             if(conn.label === 'file') {
-                conn.send(file);
-                $conn.find('.messages').append('<div><span class="file">You sent a file.</span></div>');
+                conn.send(data);
+                $conn.find('.messages').append('<div><span class="file">You sent a '+ file.name +'.</span></div>');
             }
         });
     });
