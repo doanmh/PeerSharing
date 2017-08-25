@@ -3,13 +3,7 @@ var peer = new Peer({
     debug: 3
 });
 
-var totalPeers = 0;
-
 var data = {};
-
-peer.on('open', function (id) {
-    totalPeers++;
-});
 
 peer.on('connection', function (conn) {
     conn.on('open', function () {
@@ -24,11 +18,15 @@ peer.on('error', function (err) {
 });
 
 $(document).ready(function () {
-    $('#uploadFile').change(function (e) {
+    $('#file-1').change(function (e) {
         e.originalEvent.preventDefault();
-        var file = $('#uploadFile')[0].files[0];
+        var file = $('#file-1')[0].files[0];
         data.name = file.name;
         data.file = file;
+        $('#downloadLink').show();
+        $('#chooseFile').hide();
+        $('#fileInfo').show();
+        $('#fileName').text(file.name);
         $('#link').text('http://localhost:3000/' + peer.id);
     })
 });
