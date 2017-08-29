@@ -152,3 +152,7 @@ body {
 		opacity: 0;
 	}
 }
+
+#speedDownload {
+	display: none;
+}
